@@ -37,7 +37,7 @@ def get_sales_data():
         
     return sales_data
     
-    
+#here we are converting the argument into integer and check for length validity  
 def validate_data(values):
     """
     Inside the try, converts all string values into integers.
@@ -55,7 +55,7 @@ def validate_data(values):
         return False
     return True
         
-        
+# just append the data we got from user in get_data funtion        
 def update_sales_worksheet(data):
     """
     Update sales worksheet,add new row with the list data provided.
@@ -65,8 +65,8 @@ def update_sales_worksheet(data):
     sales_worksheet.append_row(data)
     print("sales worksheet updated successfully.\n")
     
-    
-def calculate_surplus_data(sales_row):
+# here we are getting the last row of the data in the stock sheet in google docs   
+def calculate_surplus_data(sales_row): 
     """
     Compare sales with stock and calculate the surplus for each item type.
     The surplus is defines as the sales figure strubtracted from the stock:
@@ -76,6 +76,17 @@ def calculate_surplus_data(sales_row):
     print("calculating surplus data...\n")
     stock=SHEET.worksheet("stock").get_all_values()
     stock_row=stock[-1]
+    print(f"stock row: {stock_row}")
+    print(f"sales row: {sales_row}")
+    
+    surplus_data=[]
+    for stock,sales in zip(stock,sales):
+        surplus=int(stock)-sales
+        surplus_data.append(surplus)
+    return surplus_data
+    
+    
+        
     
 
 #here we are converting the list data from get_sales_data to integer and passing that result in update_sales_worksheet
@@ -84,9 +95,9 @@ def main():
     Run all program functions
     """
     data=get_sales_data()
-    sales_data=[int(num) for num in data]
+    sales_data=[int(num) for num in data] 
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    new_surplus_data=calculate_surplus_data(sales_data)
 
 print("Welcome to love sandwiches data automation")
 main() 
